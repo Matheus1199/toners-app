@@ -10,28 +10,29 @@ conexao = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server
 
 cursor = conexao.cursor()
 
-id = 1
 
 id_cliente = """SELECT c.Id_Cliente
     FROM TbL_Clientes C, Tbl_Pedidos P
     WHERE  p.Cod_Cliente = C.Id_Cliente and p.Data >= '2022' and c.Ativo = 1 and Id_Cliente <> 1
     ORDER BY p.Data desc"""
 
-comando = f"""SELECT top 3 C.Nome, P.Data, P.Valor_Total
-    FROM TbL_Clientes C, Tbl_Pedidos P
-    WHERE  p.Cod_Cliente = C.Id_Cliente and p.Cod_Cliente = {id}
-    ORDER BY p.Data desc"""
 
 tabela = pd.read_sql(id_cliente, conexao)
 
+
+cont = 0
 id = tabela.to_numpy()
-print(id[0])
-
-tabela2 = pd.read_sql(comando, conexao)
+cliente = int(id[cont])
 
 
-#print(tabela.loc[0:0])
+for cliente in range(cont, len(id)):
+    comando = f"""SELECT top 3 C.Nome, P.Data, P.Valor_Total
+        FROM TbL_Clientes C, Tbl_Pedidos P
+        WHERE  p.Cod_Cliente = C.Id_Cliente and p.Cod_Cliente = {cliente}
+        ORDER BY p.Data desc"""
+    tabela2 = pd.read_sql(comando, conexao)
+    print(tabela2)
+    cont += 1
 
-print(tabela2)
-
-#print(tabela["Id_Cliente"].head())
+var = tabela2.to_numpy()
+print(var[0, 1])
