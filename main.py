@@ -35,4 +35,5 @@ for cliente in range(cont, len(id)):
     cont += 1
 
 var = tabela2.to_numpy()
-print(var[0, 1])
+
+
